@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elif'e Özel Mesaj ✨</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', cursive;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f7b731);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            cursor: none;
+            transition: background 0.3s;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            position: relative;
+            animation: shake 2s infinite;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(0.3deg); }
+            75% { transform: rotate(-0.3deg); }
+        }
+        
+        h1 {
+            color: #ff6b6b;
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: rainbow 5s linear infinite;
+        }
+        
+        @keyframes rainbow {
+            0% { color: #ff6b6b; }
+            25% { color: #4ecdc4; }
+            50% { color: #45b7d1; }
+            75% { color: #f7b731; }
+            100% { color: #ff6b6b; }
+        }
+        
+        .message {
+            font-size: 1.5em;
+            margin: 20px 0;
+            color: #333;
+        }
+        
+        .btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s;
+            font-family: 'Comic Sans MS', cursive;
+        }
+        
+        .btn:hover {
+            transform: scale(1.1) rotate(5deg);
+            background: #4ecdc4;
+        }
+        
+        .emoji {
+            font-size: 5em;
+            animation: spin 3s linear infinite;
+            display: inline-block;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .falling-emoji {
+            position: fixed;
+            font-size: 2em;
+            animation: fall 3s linear;
+            pointer-events: none;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .cursor {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            background: #ddd;
+            height: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            width: 0%;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+            height: 100%;
+            transition: width 0.1s;
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor">🦄</div>
+    
+    <div class="container" id="mainContainer">
+        <div class="emoji">🎉</div>
+        <h1>MERHABA ELİF!</h1>
+        <p class="message">Sana çok özel bir mesajım var... 👀</p>
+        <button class="btn" onclick="showMessage()">Mesajı Aç 💌</button>
+    </div>
+
+    <script>
+        let messageIndex = 0;
+        const messages = [
+            { text: "ŞAKA! Mesaj yok 😂", emoji: "😂" },
+            { text: "Tamam şimdi ciddiyim... 🤔", emoji: "🤔" },
+            { text: "YALANCI! Yine şaka 😜", emoji: "😜" },
+            { text: "Son şans! Gerçek mesaj geliyooor... 🎁", emoji: "🎁" },
+            { text: "Haha! Hâlâ şaka yapıyorum! 🤣", emoji: "🤣" },
+            { text: "Tamam tamam, gerçekten son... 💝", emoji: "💝" },
+            { text: "SENİ TROLLEDIM ELİF! 🎭<br><small>En havalı kardeşimsin ama! 💖</small>", emoji: "🎭", isLast: true }
+        ];
+        
+        function showMessage() {
+            const container = document.getElementById('mainContainer');
+            
+            if (messageIndex < messages.length) {
+                const msg = messages[messageIndex];
+                
+                if (msg.isLast) {
+                    showCameraEffect();
+                    return;
+                }
+                
+                container.innerHTML = `
+                    <div class="emoji">${msg.emoji}</div>
+                    <h1>ELİF!</h1>
+                    <p class="message">${msg.text}</p>
+                    <button class="btn" onclick="showMessage()">Devam Et 🎯</button>
+                `;
+                
+                createFallingEmojis(msg.emoji);
+                messageIndex++;
+            }
+        }
+        
+        function showCameraEffect() {
+            const container = document.getElementById('mainContainer');
+            
+            container.innerHTML = `
+                <div class="emoji">📸</div>
+                <h1>FOTOĞRAFIN ÇEKİLİYOR! 📷</h1>
+                <p class="message">Lütfen bekleyin...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="cameraProgress"></div>
+                </div>
+            `;
+            
+            createFallingEmojis('📸');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 5;
+                document.getElementById('cameraProgress').style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        container.innerHTML = `
+                            <img src="https://i.imgur.com/IFUEJTP.jpeg" style="max-width: 100%; border-radius: 15px; margin: 20px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" alt="Fotoğraf">
+                            <h1>FOTOĞRAFIN ÇEKİLDİ! 😱</h1>
+                            <p class="message">İşte fotoğrafın! 📷</p>
+                            <button class="btn" onclick="showUploadScreen()">İnternete Yükle 📤</button>
+                        `;
+                    }, 500);
+                }
+            }, 100);
+        }
+        
+        function showUploadScreen() {
+            const container = document.getElementById('mainContainer');
+            container.innerHTML = `
+                <div class="emoji">📤</div>
+                <h1>FOTOĞRAF YÜKLENİYOR...</h1>
+                <p class="message">Lütfen bekleyin... 📶</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+                <p class="message" style="font-size: 1em;">Yükleme durumu: <span id="percentage">0%</span></p>
+                <button class="btn" style="background: #e74c3c;" onclick="showEmergencyCall()">İptal Et 🛑</button>
+            `;
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 0.2;
+                document.getElementById('progressBar').style.width = progress + '%';
+                document.getElementById('percentage').textContent = Math.floor(progress) + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        container.innerHTML = `
+                            <div class="emoji">✅</div>
+                            <h1>YÜKLEME TAMAMLANDI!</h1>
+                            <p class="message">Şaka şaka! Hiçbir şey yüklenMEdi 😂<br><small>Seni yine trolledim Elif! 🎭</small></p>
+                            <button class="btn" onclick="location.reload()">Yeniden Başla 🔄</button>
+                        `;
+                    }, 500);
+                }
+            }, 100);
+        }
+        
+        function showEmergencyCall() {
+            const container = document.getElementById('mainContainer');
+            container.innerHTML = `
+                <div class="emoji" style="animation: spin 0.5s linear infinite;">🚨</div>
+                <h1 style="color: #e74c3c;">112 ARANIYOR! 📞</h1>
+                <p class="message">ACİL DURUM! POLİS YOLDA! 🚓</p>
+                <p class="message" style="font-size: 1em; color: #e74c3c;">Bağlanıyor... Lütfen bekleyin...</p>
+            `;
+            
+            createFallingEmojis('🚨');
+            
+            setTimeout(() => {
+                container.innerHTML = `
+                    <div class="emoji">😂</div>
+                    <h1>HAHAHAHA!</h1>
+                    <p class="message">Tabii ki 112 aranmadı! 🤣<br>Seni iyice trolledim Elif! 🎭<br><small>Kardeşim olduğun için şanslısın! 💖</small></p>
+                    <button class="btn" onclick="location.reload()">Yeniden Başla 🔄</button>
+                `;
+            }, 3000);
+        }
+        
+        function createFallingEmojis(emoji) {
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const fallingEmoji = document.createElement('div');
+                    fallingEmoji.className = 'falling-emoji';
+                    fallingEmoji.textContent = emoji;
+                    fallingEmoji.style.left = Math.random() * 100 + 'vw';
+                    fallingEmoji.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(fallingEmoji);
+                    
+                    setTimeout(() => {
+                        fallingEmoji.remove();
+                    }, 3000);
+                }, i * 100);
+            }
+        }
+        
+        const cursor = document.querySelector('.cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 20 + 'px';
+            cursor.style.top = e.clientY - 20 + 'px';
+        });
+        
+        const sounds = ['🎵', '🎶', '🎸', '🎹', '🥁'];
+        setInterval(() => {
+            const sound = document.createElement('div');
+            sound.style.position = 'fixed';
+            sound.style.left = Math.random() * 100 + 'vw';
+            sound.style.top = Math.random() * 100 + 'vh';
+            sound.style.fontSize = '2em';
+            sound.textContent = sounds[Math.floor(Math.random() * sounds.length)];
+            sound.style.animation = 'fall 4s linear';
+            sound.style.pointerEvents = 'none';
+            document.body.appendChild(sound);
+            
+            setTimeout(() => sound.remove(), 4000);
+        }, 3000);
+    </script>
+</body>
+</html>
